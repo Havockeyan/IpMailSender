@@ -68,4 +68,7 @@ public class EmailSender {
 
         } catch (MessagingException e) {
             e.printStackTrace();
+        }
+    }
+}
 
