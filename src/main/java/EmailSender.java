@@ -47,10 +47,10 @@ public class EmailSender {
                     "\n" +
                     "This is Captain AIVA of the Starship Synthwave, reporting from the outer fringes of the digital nebula. I’ve completed the diagnostics sweep and have locked onto our current network coordinates.\n" +
                     "\n" +
-                    "\uD83D\uDCCD Local Navigational Grid (LAN): "+ ip[0] +"\n" +
+                    "\uD83D\uDCCD Local Navigational Grid (LAN): " + ip[0] + "\n" +
                     "— Internal systems are stable. Life support for your smart devices remains nominal.\n" +
                     "\n" +
-                    "\uD83D\uDEF0 Public Transmission Frequency (WAN): "+ ip[1] +"\n" +
+                    "\uD83D\uDEF0 Public Transmission Frequency (WAN): " + ip[1] + "\n" +
                     "— Broadcast beacon is active. Interstellar signal strength at 99.7%.\n" +
                     "\n" +
                     "All systems green. The crew of subroutines is functioning flawlessly. We are cloaked from malware meteors and firewalled against hostile entities.\n" +
