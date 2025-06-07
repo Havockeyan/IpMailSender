@@ -8,12 +8,22 @@ import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
 
 import java.util.Properties;
+import java.io.FileInputStream;
+import java.io.IOException;
 
 public class EmailSender {
     public static void main(String[] args) {
-        final String username = "karthikeyan72727@gmail.com";
-        final String appPassword = "oeaj crdp nysz lddc";
-        final String toEmail = "havockeyan121@gmail.com";
+        Properties envProps = new Properties();
+        try (FileInputStream fis = new FileInputStream("src/main/resources/email.env")) {
+            envProps.load(fis);
+        } catch (IOException e) {
+            System.err.println("Failed to load email.env file");
+            e.printStackTrace();
+            return;
+        }
+        final String username = envProps.getProperty("USERNAME");
+        final String appPassword = envProps.getProperty("APP_PASSWORD");
+        final String toEmail = envProps.getProperty("TO_EMAIL");
 
         Properties props = new Properties();
         props.put("mail.smtp.auth", "true");
@@ -58,6 +68,4 @@ public class EmailSender {
 
         } catch (MessagingException e) {
             e.printStackTrace();
-        }
-    }
-}
+
