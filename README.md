@@ -69,5 +69,50 @@ If you use Gmail, you need to generate an App Password to use with this applicat
 - `src/main/resources/email.properties` - Email configuration (not tracked by git)
 - `build.gradle` - Gradle build configuration
 
+## Continuous Integration (CI) with GitHub Actions
+
+This project uses GitHub Actions to automatically build, test, and package the application on every push and pull request to the `main` branch. The workflow ensures that:
+
+- The code compiles successfully and all tests pass.
+- Both a regular JAR and a "fat JAR" (with all dependencies included) are built.
+- The resulting JAR files are uploaded as build artifacts, so you can download and run them directly from the GitHub Actions interface.
+- Dependency information is submitted to GitHub for security and dependency tracking (enabling Dependabot alerts).
+
+### How it works
+
+1. **Build and Test:**
+   - The workflow checks out your code, sets up Java 17, and runs `./gradlew build` and `./gradlew test` to ensure your code compiles and passes all tests.
+
+2. **Build JARs:**
+   - It runs `./gradlew shadowJar` to create a fat JAR (includes all dependencies) and also builds the regular JAR.
+
+3. **Upload Artifacts:**
+   - Both the fat JAR and the regular JAR are uploaded as downloadable artifacts in the workflow run.
+
+4. **Dependency Submission:**
+   - The workflow submits a dependency graph to GitHub, enabling automated security alerts for your dependencies.
+
+You can find the workflow configuration in `.github/workflows/gradle.yml`.
+
+> **Tip:** Download the `*-all.jar` artifact from the Actions tab to get a runnable JAR with all dependencies included.
+
+## Testing
+
+This project includes unit tests for both the IP fetching and email sending logic. The tests use mock data and mocking frameworks to simulate network and email operations, so no real emails are sent and no real network calls are made during testing.
+
+### How to run the tests
+
+Run the following command in your project root:
+
+```sh
+./gradlew test
+```
+
+### What is tested?
+- **IpFetcherApiTest**: Mocks network interfaces and public IP API to verify that the correct local and public IPs are returned.
+- **EmailSenderTest**: Mocks the IP fetcher and JavaMail API to verify that the email is constructed and sent correctly, without actually sending an email.
+
+The tests are located in `src/test/java/` and use JUnit 5 and Mockito for mocking.
+
 ## License
 This project is licensed under the MIT License.
