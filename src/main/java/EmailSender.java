@@ -14,10 +14,10 @@ import java.io.IOException;
 public class EmailSender {
     public static void main(String[] args) {
         Properties envProps = new Properties();
-        try (FileInputStream fis = new FileInputStream("src/main/resources/email.env")) {
+        try (FileInputStream fis = new FileInputStream("src/main/resources/email.properties")) {
             envProps.load(fis);
         } catch (IOException e) {
-            System.err.println("Failed to load email.env file");
+            System.err.println("Failed to load email.properties file");
             e.printStackTrace();
             return;
         }
@@ -71,4 +71,3 @@ public class EmailSender {
         }
     }
 }
-
