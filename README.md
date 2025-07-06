@@ -114,5 +114,63 @@ Run the following command in your project root:
 
 The tests are located in `src/test/java/` and use JUnit 5 and Mockito for mocking.
 
+## Running as a Service on Raspberry Pi
+
+You can run IpMailSender automatically at boot or whenever your network IP changes by setting it up as a systemd service and/or a NetworkManager dispatcher script on your Raspberry Pi.
+
+### 1. Create a systemd Service
+Create a file named `ipmailsender.service` in `/etc/systemd/system/` with the following content:
+
+```ini
+[Unit]
+Description=Run IpMailSender Java app once at boot
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+User=pi
+WorkingDirectory=/home/pi/myapp
+ExecStart=/usr/bin/java -jar /home/pi/myapp/myapp.jar
+
+[Install]
+WantedBy=multi-user.target
+```
+
+- Adjust `WorkingDirectory` and `ExecStart` to match your JAR location and desired user.
+
+#### Enable and Start the Service
+Run these commands:
+
+```bash
+sudo systemctl daemon-reload
+sudo systemctl enable ipmailsender.service
+sudo systemctl start ipmailsender.service
+```
+
+### 2. Run on Network Change (Optional)
+To run the JAR whenever the network IP changes (for both WiFi and Ethernet), create a dispatcher script:
+
+Create `/etc/NetworkManager/dispatcher.d/99-myapp` with:
+
+```bash
+#!/bin/bash
+
+IF=$1
+STATUS=$2
+
+# Only run when the connection is up on WiFi (wlan0) or Ethernet (eth0)
+if { [ "$IF" = "wlan0" ] || [ "$IF" = "eth0" ]; } && [ "$STATUS" = "up" ]; then
+    /usr/bin/java -jar /home/pi/myapp/myapp.jar
+fi
+```
+
+Make it executable:
+```bash
+sudo chmod +x /etc/NetworkManager/dispatcher.d/99-myapp
+```
+
+This will run your JAR every time the `wlan0` (WiFi) or `eth0` (Ethernet) interface comes up.
+
 ## License
 This project is licensed under the MIT License.
