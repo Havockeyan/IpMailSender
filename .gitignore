@@ -38,6 +38,8 @@ bin/
 ### VS Code ###
 .vscode/
 
+#testing workflow new
+
 ### Mac OS ###
 .DS_Store
 .git-credentials
